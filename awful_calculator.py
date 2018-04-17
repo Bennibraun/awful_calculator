@@ -1,25 +1,30 @@
 import random
 import sys
-
+import math
 
 def parse_string(u_input, operator):
     a,b = '',''
     running_a, running_b = True, True
     i = 0
-    while running_a:
-        if u_input[i] in [' ',operator]:
-            running_a = False
-        else:
+    while running_a and i < u_input.find(operator):
+        if u_input[i] in ['.','0','1','2','3','4','5','6','7','8','9']:
             a += u_input[i]
-        i += 1
-    i = len(u_input)-1
-    
-    while running_b:
-        if u_input[i] in [' ',operator]:
-            running_b = False
+        elif u_input[i] == operator:
+            a_running = False
         else:
+            pass
+        i += 1
+        
+    i = u_input.find(operator)
+    
+    while running_b and i < len(u_input):
+        if u_input[i] in ['.','0','1','2','3','4','5','6','7','8','9']:
             b += u_input[i]
-        i -= 1
+        elif u_input[i] == operator:
+            b_running = False
+        else:
+            pass
+        i += 1
     a = float(a)
     b = float(b)
     if operator == '+':
@@ -30,56 +35,44 @@ def parse_string(u_input, operator):
         print(multiplication(a,b))
     elif operator == '/':
         print(division(a,b))
-                  
-
 
 def addition(a,b):
     result = a + b
-    if abs(result) > 150:
-        result += random.randint(-13,13)
-    elif abs(result) > 70:
-        result += random.randint(-7,7)
-    else:
-        result += random.randint(-1,1)
+    result += random.randint(-int(math.sqrt(abs(result))),int(math.sqrt(abs(result))))
+    if result == a + b:
+        result += random.randint(-2,2)
+    while result < 0:
+        result += math.sqrt(a)
     return result
 
 def subtraction(a,b):
-    result = a + b
-    if abs(result) > 150:
-        result += random.randint(-13,13)
-    elif abs(result) > 70:
-        result += random.randint(-7,7)
-    else:
-        result += random.randint(-1,1)
+    result = a - b
+    result += random.randint(-int(math.sqrt(abs(result))),int(math.sqrt(abs(result))))
+    if result == a - b:
+        result += random.randint(-2,2)
     return result
 
 def multiplication(a,b):
     result = a * b
-    if abs(result) > 1000:
-        result += random.randint(-75,75)
-    elif abs(result) > 100:
-        result += random.randint(-20,20)
-    elif abs(result) > 50:
-        result += random.randint(-5,5)
-    else:
+    result += random.randint(-int(math.sqrt(abs(result))),int(math.sqrt(abs(result))))
+    if result == a * b:
         result += random.randint(-2,2)
+    while result < 0:
+        result += math.sqrt(a)
     return result
 
 def division(a,b):
     result = a / b
-    if abs(result) > 1000:
-        result += random.randint(-75,75)
-    elif abs(result) > 100:
-        result += random.randint(-20,20)
-    elif abs(result) > 50:
-        result += random.randint(-5,5)
-    else:
+    result += random.randint(-int(math.sqrt(abs(result))),int(math.sqrt(abs(result))))
+    if result == a / b:
         result += random.randint(-2,2)
+    while result < 0:
+        result += math.sqrt(a)
     return result
 
 
 while True:
-    u_input = input('')
+    u_input = input('>>>')
     if u_input == 'exit' or u_input == 'stop' or u_input == 'quit':
         sys.exit()
     elif '+' in u_input:
